@@ -1,0 +1,51 @@
+3,
+CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    sex ENUM('male', 'female'),
+    age INT,
+    phone VARCHAR(255)
+);
+
+4,
+SELECT * FROM user WHERE age BETWEEN 20 AND 30;
+
+5,
+SELECT * FROM user WHERE name LIKE '%张%';
+
+6,
+SELECT AVG(age) FROM user LIMIT 5;
+
+7,
+SELECT * FROM user WHERE age BETWEEN 20 AND 30 AND name LIKE '%张%' ORDER BY age DESC;
+
+8,
+CREATE TABLE team (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    teamName VARCHAR(255)
+);
+
+CREATE TABLE score (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    teamid INT,
+    userid INT,
+    score INT,
+    FOREIGN KEY (teamid) REFERENCES team(id),
+    FOREIGN KEY (userid) REFERENCES user(id)
+);
+
+9,
+SELECT t.teamName, s.score, u.*
+FROM team t
+JOIN score s ON t.id = s.teamid
+JOIN user u ON s.userid = u.id
+WHERE t.teamName LIKE '%ECNU%'
+ORDER BY s.score DESC
+LIMIT 20;
+
+10,
+SELECT u.*
+FROM user u
+JOIN score s ON u.id = s.userid
+JOIN team t ON s.teamid = t.id
+WHERE t.teamName LIKE '%ECNU%' AND s.score IS NULL
